@@ -10,7 +10,7 @@ class PrototypesController < ApplicationController
   end
 
   def create
-    @prototype = Prototype.new(prototype_params)   
+    @prototype = Prototype.new(prototype_params)
     if @prototype.save
       redirect_to root_path
     else
@@ -19,18 +19,18 @@ class PrototypesController < ApplicationController
   end
 
   def show
-    @prototype = Prototype.find(params[:id]) 
+    @prototype = Prototype.find(params[:id])
     @comment = Comment.new
     @comments = @prototype.comments.includes(:user)
   end
 
-  def edit 
-    @prototype = Prototype.find(params[:id]) 
+  def edit
+    @prototype = Prototype.find(params[:id])
     redirect_to root_path unless current_user.id == @prototype.user_id
   end
 
   def update
-    @prototype = Prototype.find(params[:id]) 
+    @prototype = Prototype.find(params[:id])
     if @prototype.update(prototype_params)
       redirect_to prototype_path
     else
@@ -39,15 +39,13 @@ class PrototypesController < ApplicationController
   end
 
   def destroy
-    prototype = Prototype.find(params[:id]) 
-    if prototype.destroy
-      redirect_to root_path
-    end
+    prototype = Prototype.find(params[:id])
+    redirect_to root_path if prototype.destroy
   end
 
   private
+
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
   end
-  
 end
